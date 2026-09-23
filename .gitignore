@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# env and secrets
+.env
+.env.*
+!.env.example
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# os / editor
+.DS_Store
+Thumbs.db
+.cursor/
+.claude/
+.gemini/
+.agent/
+
+# local source dumps, not site assets
+/assets/
+/logo.PNG
