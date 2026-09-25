@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SelectedWorkSection } from "@/components/sections/SelectedWorkSection";
 import { ThreePillarsSection } from "@/components/sections/ThreePillarsSection";
+import { PhotoToArtSection } from "@/components/sections/PhotoToArtSection";
 import { EventGalleriesSection } from "@/components/sections/EventGalleriesSection";
 import { CommissionsSection } from "@/components/sections/CommissionsSection";
 import { AboutPreviewSection } from "@/components/sections/AboutPreviewSection";
@@ -12,6 +13,7 @@ export default function Home() {
       <HeroSection />
       <SelectedWorkSection />
       <ThreePillarsSection />
+      <PhotoToArtSection />
       <EventGalleriesSection />
       <CommissionsSection />
       <AboutPreviewSection />

@@ -178,9 +178,9 @@ export const projects: Project[] = [
     slug: "volleyball-campaign",
     title: "Volleyball Campaign",
     category: "design",
-    subcategory: "Sports Graphics",
+    subcategory: "Sports Graphics & Posters",
     description:
-      "A complete visual campaign for a competitive volleyball event — combining action photography with bold graphic design. From the court to the campaign.",
+      "A complete visual campaign for a competitive volleyball event — combining action photography with bold graphic design. From the court to the campaign poster.",
     coverImage: "/images/photo-volleyball-setting.jpg",
     images: [
       "/images/photo-volleyball-block.jpg",
@@ -188,7 +188,72 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80",
     ],
     tags: ["Sports Design", "Campaign", "Volleyball", "Poster"],
+    isCaseStudy: true,
+    caseStudy: {
+      summary: "Combining live sports action photography with editorial typography and high-energy graphic overlays.",
+      phases: [
+        {
+          title: "Photography & Action Capture",
+          description: "Capturing high-velocity spikes and blocks on court under high contrast lighting.",
+          images: ["/images/photo-volleyball-jump.jpg"],
+        },
+        {
+          title: "Graphic Overlay & Poster Layout",
+          description: "Integrating bold custom typography, player statistics, and tournament branding.",
+          images: ["/images/photo-volleyball-setting.jpg"],
+        },
+      ],
+    },
+    year: "2026",
+  },
+  {
+    id: "d2",
+    slug: "game-day-graphics",
+    title: "Game-Day Posters & Social Graphics",
+    category: "design",
+    subcategory: "Sports Graphics",
+    description:
+      "High-impact matchday posters, player spotlights, and story graphics created for sports teams and athletes to drive engagement across digital channels.",
+    coverImage: "/images/photo-volleyball-block.jpg",
+    images: [
+      "/images/photo-volleyball-block.jpg",
+      "/images/photo-volleyball-jump.jpg",
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80",
+    ],
+    tags: ["Game-day Graphics", "Posters", "Social Media", "Sports"],
     isCaseStudy: false,
+    year: "2026",
+  },
+  {
+    id: "d3",
+    slug: "athlete-branding-pack",
+    title: "Athlete Brand Identity & Merch",
+    category: "design",
+    subcategory: "Branding & Graphics",
+    description:
+      "Visual identity system for independent athletes and streetwear lines — logo mark, typography hierarchy, social kits, and apparel graphics.",
+    coverImage: "/images/dk-streetwear-character-foster.jpg",
+    images: [
+      "/images/dk-streetwear-character-foster.jpg",
+      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80",
+    ],
+    tags: ["Branding", "Social Media", "Apparel", "Identity"],
+    isCaseStudy: true,
+    caseStudy: {
+      summary: "Developing a unified identity across digital social media assets and physical merch drops.",
+      phases: [
+        {
+          title: "Brand Strategy & Vector Mark",
+          description: "Designing the custom icon and typography system matching the athlete's style.",
+          images: ["/images/dk-streetwear-character-foster.jpg"],
+        },
+        {
+          title: "Merch & Campaign Assets",
+          description: "Mockups for stickers, hoodies, and Instagram match announcement kits.",
+          images: ["/images/art-character-dk.jpg"],
+        },
+      ],
+    },
     year: "2026",
   },
 ];

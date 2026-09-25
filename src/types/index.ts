@@ -59,7 +59,7 @@ export interface Service {
   ctaService: string;
 }
 
-// ── Print Types ───────────────────────────────────────────
+// ── Print & Shop Types ────────────────────────────────────
 export interface PrintArtwork {
   id: string;
   slug: string;
@@ -68,6 +68,8 @@ export interface PrintArtwork {
   image: string;
   sizes: string[];
   tags: string[];
+  productType?: "print" | "poster" | "sticker" | "merch";
+  badge?: string;
 }
 
 // ── Contact / Form Types ──────────────────────────────────

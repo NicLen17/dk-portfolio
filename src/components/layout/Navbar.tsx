@@ -8,6 +8,7 @@ import { navLinks, socialLinks } from "@/data/navigation";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
 
 export function Navbar() {
   const { isAtTop, scrollY } = useScrollDirection();
@@ -72,8 +73,10 @@ export function Navbar() {
               ))}
             </nav>
 
-            {/* Instagram + Hamburger */}
-            <div className="flex items-center gap-5">
+            {/* Language Switcher + Instagram + Hamburger */}
+            <div className="flex items-center gap-4 md:gap-5">
+              <LanguageToggle />
+
               <a
                 href="https://www.instagram.com/dkgrfx"
                 target="_blank"

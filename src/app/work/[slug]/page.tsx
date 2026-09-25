@@ -17,12 +17,61 @@ import {
   WorkProjectTopNav,
   WorkProjectBottomNav,
 } from "@/components/work/WorkProjectNav";
+import { sanityFetch } from "@/sanity/fetch";
+import { PROJECT_BY_SLUG_QUERY, PROJECTS_QUERY } from "@/sanity/queries";
+import { urlFor } from "@/sanity/image";
+import type { SanityProjectDetail, SanityProjectListItem } from "@/sanity/types";
+import type { Project } from "@/types";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+async function resolveProject(slug: string): Promise<Project | null> {
+  const sanityDoc = await sanityFetch<SanityProjectDetail>({
+    query: PROJECT_BY_SLUG_QUERY,
+    params: { slug },
+    tags: ["project"],
+    revalidate: 60,
+  });
+
+  if (sanityDoc && sanityDoc.title) {
+    const coverImageUrl = sanityDoc.coverImage?.asset
+      ? urlFor(sanityDoc.coverImage).auto("format").quality(90).url()
+      : "/images/gallery/asset-01-jungle.jpg";
+
+    const galleryImageUrls = (sanityDoc.images || [])
+      .filter((img) => Boolean(img?.asset))
+      .map((img) => urlFor(img).auto("format").quality(90).url());
+
+    return {
+      id: sanityDoc._id,
+      slug: sanityDoc.slug,
+      title: sanityDoc.title,
+      category: sanityDoc.category,
+      subcategory: sanityDoc.subcategory || "",
+      description: sanityDoc.description,
+      coverImage: coverImageUrl,
+      images: galleryImageUrls.length > 0 ? galleryImageUrls : [coverImageUrl],
+      tags: sanityDoc.tags || [],
+      year: sanityDoc.year || new Date().getFullYear().toString(),
+      isCaseStudy: Boolean(sanityDoc.isCaseStudy),
+    };
+  }
+
+  return getProjectBySlug(slug) || null;
+}
+
 export async function generateStaticParams() {
+  const sanityProjects = await sanityFetch<SanityProjectListItem[]>({
+    query: PROJECTS_QUERY,
+    tags: ["project"],
+  });
+
+  if (sanityProjects && sanityProjects.length > 0) {
+    return sanityProjects.map((p) => ({ slug: p.slug }));
+  }
+
   return projects.map((p) => ({ slug: p.slug }));
 }
 
@@ -30,7 +79,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await resolveProject(slug);
 
   if (!project) {
     return { title: "Project Not Found" };
@@ -83,7 +132,7 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await resolveProject(slug);
 
   if (!project) notFound();
 

@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ImageCard } from "@/components/ui/ImageCard";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { getProjectsByCategory } from "@/data/projects";
+import { getProjectsByCategory, projects as fallbackProjects } from "@/data/projects";
 import type { Category } from "@/types";
+import type { SanityProjectListItem } from "@/sanity/types";
 
 const FILTERS = [
   { label: "ALL", value: "all" },
@@ -15,9 +16,22 @@ const FILTERS = [
   { label: "PHOTO", value: "photo" },
 ] as const;
 
-export function WorkPageClient() {
+interface WorkPageClientProps {
+  sanityProjects?: SanityProjectListItem[] | null;
+}
+
+export function WorkPageClient({ sanityProjects }: WorkPageClientProps) {
   const [activeFilter, setActiveFilter] = useState<"all" | Category>("all");
-  const filtered = getProjectsByCategory(activeFilter);
+
+  const hasSanityProjects = Boolean(sanityProjects && sanityProjects.length > 0);
+
+  const filteredSanity = hasSanityProjects && sanityProjects
+    ? activeFilter === "all"
+      ? sanityProjects
+      : sanityProjects.filter((p) => p.category === activeFilter)
+    : [];
+
+  const filteredStatic = getProjectsByCategory(activeFilter);
 
   return (
     <div className="min-h-screen bg-black pt-20">
@@ -57,24 +71,43 @@ export function WorkPageClient() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4 }}
           >
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05, duration: 0.5 }}
-              >
-                <ImageCard
-                  src={project.coverImage}
-                  alt={project.title}
-                  title={project.title}
-                  subtitle={`${project.category.toUpperCase()} · ${project.subcategory}`}
-                  href={`/work/${project.slug}`}
-                  aspectRatio="portrait"
-                  priority={i < 3}
-                />
-              </motion.div>
-            ))}
+            {hasSanityProjects
+              ? filteredSanity.map((project, i) => (
+                  <motion.div
+                    key={project._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.5 }}
+                  >
+                    <ImageCard
+                      sanityImage={project.coverImage}
+                      alt={project.title}
+                      title={project.title}
+                      subtitle={`${project.category.toUpperCase()} · ${project.subcategory}`}
+                      href={`/work/${project.slug}`}
+                      aspectRatio="portrait"
+                      priority={i < 3}
+                    />
+                  </motion.div>
+                ))
+              : filteredStatic.map((project, i) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.5 }}
+                  >
+                    <ImageCard
+                      src={project.coverImage}
+                      alt={project.title}
+                      title={project.title}
+                      subtitle={`${project.category.toUpperCase()} · ${project.subcategory}`}
+                      href={`/work/${project.slug}`}
+                      aspectRatio="portrait"
+                      priority={i < 3}
+                    />
+                  </motion.div>
+                ))}
           </motion.div>
         </AnimatePresence>
       </div>

@@ -4,9 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { SanityImage } from "./SanityImage";
+import type { SanityImage as SanityImageType } from "@/sanity/types";
 
 interface ImageCardProps {
-  src: string;
+  src?: string;
+  sanityImage?: SanityImageType;
   alt: string;
   title?: string;
   subtitle?: string;
@@ -25,6 +28,7 @@ const aspectRatios = {
 
 export function ImageCard({
   src,
+  sanityImage,
   alt,
   title,
   subtitle,
@@ -43,14 +47,27 @@ export function ImageCard({
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover transition-transform duration-700 group-hover:scale-105"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={priority}
-      />
+      {sanityImage ? (
+        <SanityImage
+          image={sanityImage}
+          alt={alt}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={priority}
+        />
+      ) : src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={priority}
+        />
+      ) : (
+        <div className="w-full h-full bg-neutral-900" />
+      )}
       {(title || subtitle) && (
         <div className="absolute inset-0 gradient-card opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
           {subtitle && (
