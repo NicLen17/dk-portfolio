@@ -26,11 +26,15 @@ const fallbackSlides = [
   },
 ];
 
+import { useLanguage } from "@/i18n/LanguageContext";
+import { resolveLocale } from "@/lib/locale";
+
 interface HeroContentProps {
   heroSettings?: SanityHeroSettings | null;
 }
 
 export function HeroContent({ heroSettings }: HeroContentProps) {
+  const { lang, t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const sanitySlides = (heroSettings?.slides || []).filter((s) => Boolean(s?.asset));
@@ -50,18 +54,17 @@ export function HeroContent({ heroSettings }: HeroContentProps) {
     el?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const headline = heroSettings?.headline || "MAKE THE MOMENT\nFEEL BIGGER.";
-  const subheading =
-    heroSettings?.subheading || "TURNING MOMENTS, IDEAS & STORIES INTO VISUAL WORK.";
-  const badge = heroSettings?.badge || "REAL MOMENTS → ART";
+  const headline =
+    resolveLocale(heroSettings?.headline, lang) || `${t.hero.titleLine1}\n${t.hero.titleLine2}`;
+  const subheading = resolveLocale(heroSettings?.subheading, lang) || t.hero.subtitle;
+  const badge = resolveLocale(heroSettings?.badge, lang) || t.hero.signature;
   const tags = heroSettings?.categoryTags?.length
     ? heroSettings.categoryTags
-    : ["ART", "DESIGN", "PHOTO"];
-  const primaryCta = heroSettings?.primaryCtaText || "EXPLORE THE WORK →";
-  const secondaryCta = heroSettings?.secondaryCtaText || "SERVICES & COMMISSIONS";
+    : t.hero.tags;
+  const primaryCta = resolveLocale(heroSettings?.primaryCtaText, lang) || t.hero.exploreBtn;
+  const secondaryCta = resolveLocale(heroSettings?.secondaryCtaText, lang) || t.hero.servicesBtn;
   const secondaryLink = heroSettings?.secondaryCtaLink || "/services";
-  const footerTagline =
-    heroSettings?.footerTagline || "ART • DESIGN • PHOTO — ONE CREATIVE IDENTITY";
+  const footerTagline = resolveLocale(heroSettings?.footerTagline, lang) || t.hero.footerTagline;
 
   return (
     <section className="relative w-full h-screen min-h-[650px] flex items-end overflow-hidden bg-black">

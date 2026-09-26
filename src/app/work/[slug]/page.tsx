@@ -22,6 +22,7 @@ import { PROJECT_BY_SLUG_QUERY, PROJECTS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import type { SanityProjectDetail, SanityProjectListItem } from "@/sanity/types";
 import type { Project } from "@/types";
+import { resolveLocale } from "@/lib/locale";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -47,10 +48,10 @@ async function resolveProject(slug: string): Promise<Project | null> {
     return {
       id: sanityDoc._id,
       slug: sanityDoc.slug,
-      title: sanityDoc.title,
+      title: resolveLocale(sanityDoc.title, "EN"),
       category: sanityDoc.category,
-      subcategory: sanityDoc.subcategory || "",
-      description: sanityDoc.description,
+      subcategory: resolveLocale(sanityDoc.subcategory, "EN") || "",
+      description: resolveLocale(sanityDoc.description, "EN"),
       coverImage: coverImageUrl,
       images: galleryImageUrls.length > 0 ? galleryImageUrls : [coverImageUrl],
       tags: sanityDoc.tags || [],

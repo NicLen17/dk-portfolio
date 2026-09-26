@@ -9,6 +9,9 @@ import { getProjectsByCategory, projects as fallbackProjects } from "@/data/proj
 import type { Category } from "@/types";
 import type { SanityProjectListItem } from "@/sanity/types";
 
+import { useLanguage } from "@/i18n/LanguageContext";
+import { resolveLocale } from "@/lib/locale";
+
 const FILTERS = [
   { label: "ALL", value: "all" },
   { label: "ART", value: "art" },
@@ -21,6 +24,7 @@ interface WorkPageClientProps {
 }
 
 export function WorkPageClient({ sanityProjects }: WorkPageClientProps) {
+  const { lang, t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<"all" | Category>("all");
 
   const hasSanityProjects = Boolean(sanityProjects && sanityProjects.length > 0);
@@ -37,9 +41,9 @@ export function WorkPageClient({ sanityProjects }: WorkPageClientProps) {
     <div className="min-h-screen bg-black pt-20">
       {/* Header */}
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16 pt-16 md:pt-24 pb-12">
-        <SectionLabel className="mb-4">Portfolio</SectionLabel>
+        <SectionLabel className="mb-4">{t.nav.work}</SectionLabel>
         <SectionHeading className="text-[clamp(2.25rem,4.2vw,4rem)] text-white mb-12">
-          {"THE WORK."}
+          {lang === "ES" ? "EL TRABAJO." : "THE WORK."}
         </SectionHeading>
 
         {/* Filters */}
@@ -72,24 +76,28 @@ export function WorkPageClient({ sanityProjects }: WorkPageClientProps) {
             transition={{ duration: 0.4 }}
           >
             {hasSanityProjects
-              ? filteredSanity.map((project, i) => (
-                  <motion.div
-                    key={project._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05, duration: 0.5 }}
-                  >
-                    <ImageCard
-                      sanityImage={project.coverImage}
-                      alt={project.title}
-                      title={project.title}
-                      subtitle={`${project.category.toUpperCase()} · ${project.subcategory}`}
-                      href={`/work/${project.slug}`}
-                      aspectRatio="portrait"
-                      priority={i < 3}
-                    />
-                  </motion.div>
-                ))
+              ? filteredSanity.map((project, i) => {
+                  const title = resolveLocale(project.title, lang);
+                  const subcategory = resolveLocale(project.subcategory, lang) || project.category;
+                  return (
+                    <motion.div
+                      key={project._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05, duration: 0.5 }}
+                    >
+                      <ImageCard
+                        sanityImage={project.coverImage}
+                        alt={title}
+                        title={title}
+                        subtitle={`${project.category.toUpperCase()} · ${subcategory}`}
+                        href={`/work/${project.slug}`}
+                        aspectRatio="portrait"
+                        priority={i < 3}
+                      />
+                    </motion.div>
+                  );
+                })
               : filteredStatic.map((project, i) => (
                   <motion.div
                     key={project.id}

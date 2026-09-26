@@ -1,24 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export function LanguageToggle() {
-  const [lang, setLang] = useState<"EN" | "ES">("EN");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("dkgrfx_lang") as "EN" | "ES" | null;
-    if (saved) setLang(saved);
-  }, []);
-
-  const toggleLang = (selected: "EN" | "ES") => {
-    setLang(selected);
-    localStorage.setItem("dkgrfx_lang", selected);
-  };
+  const { lang, setLang } = useLanguage();
 
   return (
     <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-full px-2 py-1 text-[11px] font-mono tracking-widest">
       <button
-        onClick={() => toggleLang("EN")}
+        onClick={() => setLang("EN")}
         className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
           lang === "EN" ? "bg-white text-black font-bold" : "text-neutral-400 hover:text-white"
         }`}
@@ -28,7 +18,7 @@ export function LanguageToggle() {
       </button>
       <span className="text-neutral-600">|</span>
       <button
-        onClick={() => toggleLang("ES")}
+        onClick={() => setLang("ES")}
         className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
           lang === "ES" ? "bg-white text-black font-bold" : "text-neutral-400 hover:text-white"
         }`}

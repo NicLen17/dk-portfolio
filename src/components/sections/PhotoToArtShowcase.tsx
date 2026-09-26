@@ -53,21 +53,53 @@ const defaultSteps: ProcessStepData[] = [
   },
 ];
 
+import { useLanguage } from "@/i18n/LanguageContext";
+import { resolveLocale } from "@/lib/locale";
+
 interface PhotoToArtShowcaseProps {
   data?: SanityCreativeSignature | null;
 }
 
 export function PhotoToArtShowcase({ data }: PhotoToArtShowcaseProps) {
+  const { lang, t } = useLanguage();
   const [activeStep, setActiveStep] = useState<"photo" | "sketch" | "art">("art");
 
-  const sectionLabel = data?.sectionLabel || "Creative Signature";
-  const headingLine1 = data?.headingLine1 || "PHOTO → SKETCH →";
-  const headingLine2 = data?.headingLine2 || "FINAL ART";
-  const sectionDescription =
-    data?.description ||
-    "Taking real moments, sports highlights, portraits, or raw ideas and transforming them into signature digital artwork.";
+  const defaultSteps: ProcessStepData[] = [
+    {
+      id: "photo",
+      stepNumber: "01",
+      badge: t.photoToArt.step1Badge,
+      title: t.photoToArt.step1Title,
+      description: t.photoToArt.step1Desc,
+      staticImage: "/images/commission-photo-father-son.jpg",
+      tagline: t.photoToArt.step1Tag,
+    },
+    {
+      id: "sketch",
+      stepNumber: "02",
+      badge: t.photoToArt.step2Badge,
+      title: t.photoToArt.step2Title,
+      description: t.photoToArt.step2Desc,
+      staticImage: "/images/commission-art-father-son.jpg",
+      tagline: t.photoToArt.step2Tag,
+    },
+    {
+      id: "art",
+      stepNumber: "03",
+      badge: t.photoToArt.step3Badge,
+      title: t.photoToArt.step3Title,
+      description: t.photoToArt.step3Desc,
+      staticImage: "/images/commission-art-father-son.jpg",
+      tagline: t.photoToArt.step3Tag,
+    },
+  ];
 
-  const ctaText = data?.ctaText || "COMMISSION YOUR MOMENT →";
+  const sectionLabel = resolveLocale(data?.sectionLabel, lang) || t.photoToArt.sectionLabel;
+  const headingLine1 = resolveLocale(data?.headingLine1, lang) || "PHOTO → SKETCH →";
+  const headingLine2 = resolveLocale(data?.headingLine2, lang) || "FINAL ART";
+  const sectionDescription = resolveLocale(data?.description, lang) || t.photoToArt.desc;
+
+  const ctaText = resolveLocale(data?.ctaText, lang) || t.photoToArt.ctaBtn;
   const ctaLink = data?.ctaLink || "/services";
 
   // Build resolved steps with Sanity or default data
@@ -75,30 +107,30 @@ export function PhotoToArtShowcase({ data }: PhotoToArtShowcaseProps) {
     {
       id: "photo",
       stepNumber: "01",
-      badge: data?.step1?.badge || defaultSteps[0].badge,
-      title: data?.step1?.title || defaultSteps[0].title,
-      tagline: data?.step1?.tagline || defaultSteps[0].tagline,
-      description: data?.step1?.description || defaultSteps[0].description,
+      badge: resolveLocale(data?.step1?.badge, lang) || defaultSteps[0].badge,
+      title: resolveLocale(data?.step1?.title, lang) || defaultSteps[0].title,
+      tagline: resolveLocale(data?.step1?.tagline, lang) || defaultSteps[0].tagline,
+      description: resolveLocale(data?.step1?.description, lang) || defaultSteps[0].description,
       sanityImage: data?.step1?.image?.asset ? data.step1.image : undefined,
       staticImage: defaultSteps[0].staticImage,
     },
     {
       id: "sketch",
       stepNumber: "02",
-      badge: data?.step2?.badge || defaultSteps[1].badge,
-      title: data?.step2?.title || defaultSteps[1].title,
-      tagline: data?.step2?.tagline || defaultSteps[1].tagline,
-      description: data?.step2?.description || defaultSteps[1].description,
+      badge: resolveLocale(data?.step2?.badge, lang) || defaultSteps[1].badge,
+      title: resolveLocale(data?.step2?.title, lang) || defaultSteps[1].title,
+      tagline: resolveLocale(data?.step2?.tagline, lang) || defaultSteps[1].tagline,
+      description: resolveLocale(data?.step2?.description, lang) || defaultSteps[1].description,
       sanityImage: data?.step2?.image?.asset ? data.step2.image : undefined,
       staticImage: defaultSteps[1].staticImage,
     },
     {
       id: "art",
       stepNumber: "03",
-      badge: data?.step3?.badge || defaultSteps[2].badge,
-      title: data?.step3?.title || defaultSteps[2].title,
-      tagline: data?.step3?.tagline || defaultSteps[2].tagline,
-      description: data?.step3?.description || defaultSteps[2].description,
+      badge: resolveLocale(data?.step3?.badge, lang) || defaultSteps[2].badge,
+      title: resolveLocale(data?.step3?.title, lang) || defaultSteps[2].title,
+      tagline: resolveLocale(data?.step3?.tagline, lang) || defaultSteps[2].tagline,
+      description: resolveLocale(data?.step3?.description, lang) || defaultSteps[2].description,
       sanityImage: data?.step3?.image?.asset ? data.step3.image : undefined,
       staticImage: defaultSteps[2].staticImage,
     },

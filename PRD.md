@@ -66,7 +66,7 @@ flowchart TD
   - `secondaryCtaText` (string: e.g. "SERVICES & COMMISSIONS")
   - `secondaryCtaLink` (string: e.g. "/services")
   - `footerTagline` (string: e.g. "ART • DESIGN • PHOTO — ONE CREATIVE IDENTITY")
-  - `slides` (array of images with `hotspot: true`, `alt` string for the continuous Ken Burns background carousel).
+  - `slides` (array of images with `hotspot: true`, `alt` string for continuous Ken Burns background carousel).
 
 ### 2. `creativeSignature` (Singleton — Photo to Art Process Showcase)
 - **Target Surface:** Homepage "Creative Signature" process section.
@@ -81,7 +81,48 @@ flowchart TD
   - `ctaText` (string: button label)
   - `ctaLink` (string: button destination)
 
-### 3. `project` (Portfolio Works & Case Studies)
+### 3. `commissionsSettings` (Singleton — Custom Commissions & Process)
+- **Target Surface:** Homepage "Commissions / Custom Art" section.
+- **Fields:**
+  - `sectionLabel` (string: "Custom Artwork & Illustration")
+  - `headline` (string: "BRING YOUR VISION TO LIFE")
+  - `description` (text: Process and style description)
+  - `referencePhoto` (image with `hotspot: true`, `alt` string)
+  - `referencePhotoLabel` (string: "ORIGINAL PHOTO")
+  - `finalArtwork` (image with `hotspot: true`, `alt` string)
+  - `finalArtworkLabel` (string: "VECTOR ILLUSTRATION")
+  - `commissionInputs` (array of strings: pills of what can be commissioned)
+  - `steps` (array of objects: number, label for the 4-step commissioning workflow)
+  - `trustBadge` (string: "DIRECT WHATSAPP CONSULTATION • NO PLATFORM FEES • FULL PROCESS TRANSPARENCY")
+  - `ctaText` (string: "START A COMMISSION")
+  - `ctaSubject` (string: "Custom Art Commission")
+
+### 4. `aboutSettings` (Singleton — Artist Bio, Manifesto & Stats)
+- **Target Surfaces:** Homepage "About Darwin" Preview & `/about` Dedicated Page.
+- **Fields:**
+  - `previewWords` (array of strings: dynamic typographic words e.g. ["VISION", "MOMENTUM", "CRAFT", "IDENTITY", "STORY"])
+  - `previewBadge` (string: "ABOUT THE ARTIST")
+  - `previewBio` (text: Short summary bio for the homepage)
+  - `fullBioHeading` (string: Main heading on `/about`)
+  - `fullBioParagraphs` (array of text blocks: Artist story and manifesto)
+  - `profileImage` (image with `hotspot: true`, `alt` string)
+  - `actionImage` (image with `hotspot: true`, `alt` string: Darwin shooting/creating)
+  - `stats` (array of objects: number, label e.g. 5+ Years, 50+ Projects, 100+ Prints)
+
+### 5. `siteSettings` (Singleton — Global Contact & Socials)
+- **Target Surfaces:** Global Footer, Contact Section (`#contact`), Contact Form, Meta.
+- **Fields:**
+  - `siteTitle` (string)
+  - `artistName` (string: "Darwin")
+  - `location` (string: "Atlanta, GA")
+  - `whatsappNumber` (string: WhatsApp phone number with country code)
+  - `contactEmail` (string: Direct contact email)
+  - `instagramHandle` (string: e.g. "@dkgrfx")
+  - `instagramUrl` (url: Instagram direct profile link)
+  - `footerTagline` (string: e.g. "VISUAL STORYTELLING THROUGH PHOTOGRAPHY & ART")
+  - `copyrightText` (string: "© DKGRFX. ALL RIGHTS RESERVED.")
+
+### 6. `project` (Portfolio Works & Case Studies)
 - **Target Surfaces:** Selected Work masonry on Homepage, `/work` portfolio grid, `/work/[slug]` bespoke project pages.
 - **Fields:**
   - `title` (string, required)
@@ -96,7 +137,7 @@ flowchart TD
   - `isCaseStudy` (boolean)
   - `caseStudy` (object containing `summary` and `phases[]` with step titles, descriptions, and process images).
 
-### 2. `practicePillar` (The Practice — Homepage Visual Pillars)
+### 7. `practicePillar` (The Practice — Homepage Visual Pillars)
 - **Target Surfaces:** Homepage "The Practice" 3-column banner cards.
 - **Fields:**
   - `title` (string: "ART", "DESIGN", "PHOTO" or custom)
@@ -106,7 +147,7 @@ flowchart TD
   - `image` (image with `hotspot: true`, `alt` string)
   - `orderRank` (number)
 
-### 3. `service` (Services & Packages)
+### 8. `service` (Services & Packages)
 - **Target Surfaces:** `/services` catalog page.
 - **Fields:**
   - `title` (string: e.g. "PHOTOGRAPHY", "GRAPHIC DESIGN", "CUSTOM ARTWORK")
@@ -117,7 +158,7 @@ flowchart TD
   - `ctaService` (string: pre-filled WhatsApp inquiry subject)
   - `orderRank` (number)
 
-### 4. `printArtwork` (Art Prints & Merch — Own the Art)
+### 9. `printArtwork` (Art Prints & Merch — Own the Art)
 - **Target Surfaces:** `/services` page "Own the Art" print gallery.
 - **Fields:**
   - `title` (string: Product / Artwork Title)
@@ -130,7 +171,7 @@ flowchart TD
   - `tags` (array of strings)
   - `orderRank` (number)
 
-### 5. `galleryEvent` (Client Event Photo Albums)
+### 10. `galleryEvent` (Client Event Photo Albums)
 - **Target Surfaces:** Event Highlights on Homepage, `/events` list, `/events/[slug]` full photo album.
 - **Fields:**
   - `title` (string, required)

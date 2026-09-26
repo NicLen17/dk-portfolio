@@ -57,24 +57,58 @@ const fallbackPillars = [
   },
 ];
 
+import { useLanguage } from "@/i18n/LanguageContext";
+import { resolveLocale } from "@/lib/locale";
+
 interface ThreePillarsGridProps {
   pillars?: SanityPracticePillar[] | null;
 }
 
 export function ThreePillarsGrid({ pillars }: ThreePillarsGridProps) {
+  const { lang, t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   useInView(ref, { once: true, margin: "-15%" });
+
+  const dynamicFallbackPillars = [
+    {
+      label: t.pillars.artTitle,
+      description: t.pillars.artDesc,
+      items: t.pillars.artItems,
+      image: "/images/art-smooch-satt.jpg",
+      href: "/work?category=art",
+      tag: t.pillars.artTag,
+    },
+    {
+      label: t.pillars.designTitle,
+      description: t.pillars.designDesc,
+      items: t.pillars.designItems,
+      image: "/images/photo-volleyball-block.jpg",
+      href: "/work?category=design",
+      tag: t.pillars.designTag,
+    },
+    {
+      label: t.pillars.photoTitle,
+      description: t.pillars.photoDesc,
+      items: t.pillars.photoItems,
+      image: "/images/photo-beach-lifestyle.jpg",
+      href: "/work?category=photo",
+      tag: t.pillars.photoTag,
+    },
+  ];
 
   const hasSanityPillars = Boolean(pillars && pillars.length > 0);
 
   return (
     <section className="py-24 md:py-36 bg-neutral-950" ref={ref}>
       <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16">
-        <SectionLabel className="mb-12 md:mb-16">Three Pillars</SectionLabel>
+        <SectionLabel className="mb-12 md:mb-16">{t.pillars.sectionLabel}</SectionLabel>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10">
           {hasSanityPillars && pillars
             ? pillars.map((pillar, i) => {
+                const title = resolveLocale(pillar.title, lang) || (pillar.category || "art").toUpperCase();
+                const tagline = resolveLocale(pillar.tagline, lang);
+                const description = resolveLocale(pillar.description, lang);
                 const label = (pillar.category || "art").toUpperCase();
                 const href = `/work?category=${pillar.category}`;
                 return (
@@ -91,7 +125,7 @@ export function ThreePillarsGrid({ pillars }: ThreePillarsGridProps) {
                         {pillar.image ? (
                           <SanityImage
                             image={pillar.image}
-                            alt={pillar.title}
+                            alt={title}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             sizes="(max-width: 768px) 100vw, 33vw"
@@ -105,30 +139,30 @@ export function ThreePillarsGrid({ pillars }: ThreePillarsGridProps) {
                             {label}
                           </p>
                           <h3 className="font-heading font-bold uppercase text-2xl sm:text-3xl lg:text-3xl text-white tracking-tight">
-                            {pillar.title}
+                            {title}
                           </h3>
                         </div>
                       </div>
 
                       {/* Text */}
                       <div className="p-6 md:p-8 flex flex-col gap-4 flex-1">
-                        {pillar.tagline && (
+                        {tagline && (
                           <p className="text-xs font-body uppercase tracking-[0.2em] text-neutral-500">
-                            {pillar.tagline}
+                            {tagline}
                           </p>
                         )}
                         <p className="text-sm font-body text-neutral-400 leading-relaxed">
-                          {pillar.description}
+                          {description}
                         </p>
                         <p className="mt-auto text-xs font-body font-semibold uppercase tracking-[0.15em] text-white/60 group-hover:text-white transition-colors duration-200">
-                          EXPLORE {label} →
+                          {t.pillars.exploreLink} {label} →
                         </p>
                       </div>
                     </Link>
                   </motion.div>
                 );
               })
-            : fallbackPillars.map((pillar, i) => (
+            : dynamicFallbackPillars.map((pillar, i) => (
                 <motion.div
                   key={pillar.label}
                   initial={{ opacity: 0, y: 30 }}

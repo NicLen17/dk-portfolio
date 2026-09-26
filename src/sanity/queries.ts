@@ -77,15 +77,81 @@ export const CREATIVE_SIGNATURE_QUERY = defineQuery(/* groq */ `
   }
 `);
 
+// Commissions Section (Homepage singleton)
+export const COMMISSIONS_SETTINGS_QUERY = defineQuery(/* groq */ `
+  *[_type == "commissionsSettings"][0] {
+    _id,
+    sectionLabel,
+    headline,
+    description,
+    referencePhoto {
+      ${imageFragment}
+    },
+    referencePhotoLabel,
+    finalArtwork {
+      ${imageFragment}
+    },
+    finalArtworkLabel,
+    commissionInputs,
+    steps[] {
+      number,
+      label
+    },
+    trustBadge,
+    ctaText,
+    ctaSubject
+  }
+`);
+
+// About Settings (Landing page preview & /about page singleton)
+export const ABOUT_SETTINGS_QUERY = defineQuery(/* groq */ `
+  *[_type == "aboutSettings"][0] {
+    _id,
+    sectionLabel,
+    previewWords,
+    previewBadge,
+    subheadline,
+    previewBio,
+    fullBioHeading,
+    fullBioParagraphs,
+    profileImage {
+      ${imageFragment}
+    },
+    actionImage {
+      ${imageFragment}
+    },
+    stats[] {
+      number,
+      label
+    }
+  }
+`);
+
+// Global Site Settings (Contact, WhatsApp, Instagram, Location)
+export const SITE_SETTINGS_QUERY = defineQuery(/* groq */ `
+  *[_type == "siteSettings"][0] {
+    _id,
+    siteTitle,
+    artistName,
+    location,
+    whatsappNumber,
+    contactEmail,
+    instagramHandle,
+    instagramUrl,
+    footerTagline,
+    copyrightText
+  }
+`);
+
 // Selected work / projects for landing page & work directory
 export const PROJECTS_QUERY = defineQuery(/* groq */ `
   *[_type == "project" && defined(slug.current)] | order(year desc, _createdAt desc) {
     _id,
-    "title": coalesce(title[$lang], title.en, title),
+    title,
     "slug": slug.current,
     category,
-    "subcategory": coalesce(subcategory[$lang], subcategory.en, subcategory),
-    "description": coalesce(description[$lang], description.en, description),
+    subcategory,
+    description,
     year,
     tags,
     isCaseStudy,
@@ -98,11 +164,11 @@ export const PROJECTS_QUERY = defineQuery(/* groq */ `
 export const PROJECT_BY_SLUG_QUERY = defineQuery(/* groq */ `
   *[_type == "project" && slug.current == $slug][0] {
     _id,
-    "title": coalesce(title[$lang], title.en, title),
+    title,
     "slug": slug.current,
     category,
-    "subcategory": coalesce(subcategory[$lang], subcategory.en, subcategory),
-    "description": coalesce(description[$lang], description.en, description),
+    subcategory,
+    description,
     year,
     tags,
     isCaseStudy,
@@ -113,11 +179,11 @@ export const PROJECT_BY_SLUG_QUERY = defineQuery(/* groq */ `
       ${imageFragment}
     },
     caseStudy {
-      "summary": coalesce(summary[$lang], summary.en, summary),
+      summary,
       phases[] {
         _key,
-        "title": coalesce(title[$lang], title.en, title),
-        "description": coalesce(description[$lang], description.en, description),
+        title,
+        description,
         images[] {
           ${imageFragment}
         }
@@ -130,10 +196,11 @@ export const PROJECT_BY_SLUG_QUERY = defineQuery(/* groq */ `
 export const PRACTICE_PILLARS_QUERY = defineQuery(/* groq */ `
   *[_type == "practicePillar"] | order(orderRank asc, _createdAt asc) {
     _id,
-    "title": coalesce(title[$lang], title.en, title),
+    title,
     category,
-    "tagline": coalesce(tagline[$lang], tagline.en, tagline),
-    "description": coalesce(description[$lang], description.en, description),
+    tagline,
+    description,
+    items,
     image {
       ${imageFragment}
     }
@@ -144,11 +211,11 @@ export const PRACTICE_PILLARS_QUERY = defineQuery(/* groq */ `
 export const SERVICES_QUERY = defineQuery(/* groq */ `
   *[_type == "service"] | order(orderRank asc, _createdAt asc) {
     _id,
-    "title": coalesce(title[$lang], title.en, title),
-    "description": coalesce(description[$lang], description.en, description),
+    title,
+    description,
     category,
     items,
-    "cta": coalesce(cta[$lang], cta.en, cta),
+    cta,
     ctaService
   }
 `);
@@ -157,11 +224,11 @@ export const SERVICES_QUERY = defineQuery(/* groq */ `
 export const PRINTS_QUERY = defineQuery(/* groq */ `
   *[_type == "printArtwork"] | order(orderRank asc, _createdAt asc) {
     _id,
-    "title": coalesce(title[$lang], title.en, title),
+    title,
     "slug": slug.current,
     badge,
     sizes,
-    "description": coalesce(description[$lang], description.en, description),
+    description,
     productType,
     tags,
     image {

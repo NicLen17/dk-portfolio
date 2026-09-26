@@ -10,10 +10,21 @@ import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
 
+import { useLanguage } from "@/i18n/LanguageContext";
+
 export function Navbar() {
+  const { t } = useLanguage();
   const { isAtTop, scrollY } = useScrollDirection();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const navLabels: Record<string, string> = {
+    "/work": t.nav.work,
+    "/services": t.nav.services,
+    "/events": t.nav.events,
+    "/about": t.nav.about,
+    "/contact": t.nav.contact,
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -68,7 +79,7 @@ export function Navbar() {
                   href={link.href}
                   className="text-xs font-body font-semibold uppercase tracking-[0.2em] text-white/80 hover:text-white transition-colors duration-200"
                 >
-                  {link.label}
+                  {navLabels[link.href] || link.label}
                 </Link>
               ))}
             </nav>

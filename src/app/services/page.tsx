@@ -38,6 +38,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { resolveLocale } from "@/lib/locale";
+
 export default async function ServicesPage() {
   const sanityServices = await sanityFetch<SanityService[]>({
     query: SERVICES_QUERY,
@@ -55,12 +57,12 @@ export default async function ServicesPage() {
     sanityServices && sanityServices.length > 0
       ? sanityServices.map((s) => ({
           id: s._id,
-          title: s.title,
+          title: resolveLocale(s.title, "EN"),
           category: s.category,
-          description: s.description,
-          items: s.items || [],
-          cta: s.cta || "START A PROJECT",
-          ctaService: s.ctaService || s.title,
+          description: resolveLocale(s.description, "EN"),
+          items: (s.items || []).map((item) => resolveLocale(item, "EN")),
+          cta: resolveLocale(s.cta, "EN") || "START A PROJECT",
+          ctaService: s.ctaService || resolveLocale(s.title, "EN"),
         }))
       : fallbackServices;
 
@@ -139,53 +141,58 @@ export default async function ServicesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
             {hasSanityPrints && sanityPrints
-              ? sanityPrints.map((print) => (
-                  <div key={print._id} className="group">
-                    <div className="relative aspect-[4/3] overflow-hidden mb-4 bg-neutral-900">
-                      {print.image ? (
-                        <SanityImage
-                          image={print.image}
-                          alt={print.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-neutral-900" />
-                      )}
-                      {print.badge && (
-                        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-full">
-                          <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-neutral-300">
-                            {print.badge}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <h3 className="font-heading font-bold uppercase text-xl text-white tracking-tight">
-                        {print.title}
-                      </h3>
-                      {print.sizes && print.sizes.length > 0 && (
-                        <p className="text-xs text-neutral-500">
-                          {print.sizes.join(" · ")}
+              ? sanityPrints.map((print) => {
+                  const title = resolveLocale(print.title, "EN");
+                  const badge = resolveLocale(print.badge, "EN");
+                  const description = resolveLocale(print.description, "EN");
+                  return (
+                    <div key={print._id} className="group">
+                      <div className="relative aspect-[4/3] overflow-hidden mb-4 bg-neutral-900">
+                        {print.image ? (
+                          <SanityImage
+                            image={print.image}
+                            alt={title}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-neutral-900" />
+                        )}
+                        {badge && (
+                          <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-full">
+                            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-neutral-300">
+                              {badge}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <h3 className="font-heading font-bold uppercase text-xl text-white tracking-tight">
+                          {title}
+                        </h3>
+                        {print.sizes && print.sizes.length > 0 && (
+                          <p className="text-xs text-neutral-500">
+                            {print.sizes.join(" · ")}
+                          </p>
+                        )}
+                        <p className="text-sm text-neutral-400 leading-relaxed">
+                          {description}
                         </p>
-                      )}
-                      <p className="text-sm text-neutral-400 leading-relaxed">
-                        {print.description}
-                      </p>
-                      <div className="mt-3">
-                        <Button
-                          href={buildPrintInquiryMessage(print.title)}
-                          variant="secondary"
-                          size="sm"
-                          isExternal
-                        >
-                          GET PRINT →
-                        </Button>
+                        <div className="mt-3">
+                          <Button
+                            href={buildPrintInquiryMessage(title)}
+                            variant="secondary"
+                            size="sm"
+                            isExternal
+                          >
+                            GET PRINT →
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               : fallbackPrints.map((print) => (
                   <div key={print.id} className="group">
                     <div className="relative aspect-[4/3] overflow-hidden mb-4 bg-neutral-900">

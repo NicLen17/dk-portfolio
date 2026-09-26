@@ -2,7 +2,12 @@ import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
+import { SanityImage } from "@/components/ui/SanityImage";
 import { buildGeneralWhatsAppURL } from "@/lib/whatsapp";
+import { sanityFetch } from "@/sanity/fetch";
+import { ABOUT_SETTINGS_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/queries";
+import type { SanityAboutSettings, SanitySiteSettings } from "@/sanity/types";
+import { resolveLocale } from "@/lib/locale";
 
 import type { Metadata } from "next";
 
@@ -28,8 +33,37 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+const defaultParagraphs = [
+  "DKGRFX is an independent creative practice working across photography, graphic design, and custom artwork.",
+  "I don't want to be boxed into just one medium. Whether it's capturing an intense sports play, designing a matchday campaign, or crafting a custom digital illustration, everything carries the same creative identity and standard of visual excellence.",
+  "Working internationally — with strong roots in Bolivia, Latin America, and worldwide client projects — DKGRFX is built around taking real moments, ideas, and stories, and elevating them into lasting visual work.",
+];
+
+export default async function AboutPage() {
+  const aboutData = await sanityFetch<SanityAboutSettings>({
+    query: ABOUT_SETTINGS_QUERY,
+    tags: ["aboutSettings"],
+    revalidate: 60,
+  });
+
+  const siteData = await sanityFetch<SanitySiteSettings>({
+    query: SITE_SETTINGS_QUERY,
+    tags: ["siteSettings"],
+    revalidate: 60,
+  });
+
   const waURL = buildGeneralWhatsAppURL();
+  const instagramUrl = siteData?.instagramUrl || "https://www.instagram.com/dkgrfx";
+  const instagramHandle = siteData?.instagramHandle || "@DKGRFX";
+
+  const paragraphs =
+    aboutData?.fullBioParagraphs && aboutData.fullBioParagraphs.length > 0
+      ? aboutData.fullBioParagraphs.map((p) => resolveLocale(p, "EN"))
+      : defaultParagraphs;
+
+  const words = aboutData?.previewWords?.length
+    ? aboutData.previewWords
+    : ["ART.", "DESIGN.", "PHOTO."];
 
   return (
     <div className="min-h-screen bg-black pt-20">
@@ -39,27 +73,38 @@ export default function AboutPage() {
           {/* Left — Big heading */}
           <div>
             <SectionLabel className="mb-6">About DKGRFX</SectionLabel>
-            <SectionHeading
-              className="text-[clamp(2.5rem,5vw,5rem)] text-white"
-            >
-              {["ART.", "DESIGN.", "PHOTO."]}
+            <SectionHeading className="text-[clamp(2.5rem,5vw,5rem)] text-white">
+              {words}
             </SectionHeading>
             <p className="mt-4 text-xs font-mono tracking-widest uppercase text-neutral-400">
-              MANY MEDIUMS — ONE CREATIVE IDENTITY
+              {resolveLocale(aboutData?.previewBadge, "EN") || "MANY MEDIUMS — ONE CREATIVE IDENTITY"}
             </p>
+
+            {aboutData?.profileImage?.asset && (
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mt-8 max-w-sm">
+                <SanityImage
+                  image={aboutData.profileImage}
+                  alt={aboutData.profileImage.alt || "Darwin — DKGRFX"}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            )}
           </div>
 
           {/* Right — Bio */}
           <div className="flex flex-col gap-6 md:pt-8">
-            <p className="text-base md:text-lg text-neutral-200 leading-relaxed font-medium">
-              DKGRFX is an independent creative practice working across photography, graphic design, and custom artwork.
-            </p>
-            <p className="text-base text-neutral-400 leading-relaxed">
-              I don&apos;t want to be boxed into just one medium. Whether it&apos;s capturing an intense sports play, designing a matchday campaign, or crafting a custom digital illustration, everything carries the same creative identity and standard of visual excellence.
-            </p>
-            <p className="text-base text-neutral-400 leading-relaxed">
-              Working internationally — with strong roots in Bolivia, Latin America, and worldwide client projects — DKGRFX is built around taking real moments, ideas, and stories, and elevating them into lasting visual work.
-            </p>
+            {paragraphs.map((p, idx) => (
+              <p
+                key={idx}
+                className={`text-base leading-relaxed ${
+                  idx === 0 ? "md:text-lg text-neutral-200 font-medium" : "text-neutral-400"
+                }`}
+              >
+                {p}
+              </p>
+            ))}
 
             <blockquote className="border-l border-white/30 pl-5 my-4">
               <p className="font-heading text-2xl font-bold uppercase text-white tracking-tight">
@@ -71,13 +116,8 @@ export default function AboutPage() {
               <Button href={waURL} variant="primary" size="lg" isExternal>
                 WORK WITH ME →
               </Button>
-              <Button
-                href="https://www.instagram.com/dkgrfx"
-                variant="secondary"
-                size="lg"
-                isExternal
-              >
-                @DKGRFX
+              <Button href={instagramUrl} variant="secondary" size="lg" isExternal>
+                {instagramHandle}
               </Button>
             </div>
           </div>
@@ -113,40 +153,28 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Subtle Equipment & Setup Note */}
-        <div className="py-12 border-t border-white/10 bg-neutral-950/60 rounded-xl p-8 my-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <p className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                // SUBTLE GEAR & CREATIVE SETUP
-              </p>
-              <h4 className="font-heading font-bold text-lg text-white uppercase">
-                TOOLS OF THE CRAFT
-              </h4>
-            </div>
-            <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-neutral-300">
-              <div>
-                <span className="text-neutral-500 block text-[10px]">CAMERA BODY</span>
-                Sony ZV-E10 II
-              </div>
-              <div className="h-6 w-px bg-white/10 hidden sm:block" />
-              <div>
-                <span className="text-neutral-500 block text-[10px]">PRIMARY LENS</span>
-                Tamron 17-70mm F/2.8
-              </div>
-              <div className="h-6 w-px bg-white/10 hidden sm:block" />
-              <div>
-                <span className="text-neutral-500 block text-[10px]">DIGITAL CANVAS</span>
-                Hand-Drawn Vector Stylus & Suite
-              </div>
+        {/* Stats & Highlights if configured */}
+        {aboutData?.stats && aboutData.stats.length > 0 && (
+          <div className="py-12 border-t border-white/10 bg-neutral-950/60 rounded-xl p-8 my-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {aboutData.stats.map((stat, i) => (
+                <div key={i}>
+                  <p className="font-heading font-black text-2xl md:text-3xl text-white">
+                    {stat.number}
+                  </p>
+                  <p className="text-xs font-mono text-neutral-400 uppercase tracking-wider mt-1">
+                    {resolveLocale(stat.label, "EN")}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        )}
 
         {/* CTA */}
         <div className="py-16 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
           <h2 className="font-heading font-bold uppercase text-2xl md:text-3xl lg:text-4xl text-white tracking-tight">
-            LET'S CREATE SOMETHING.
+            LET&apos;S CREATE SOMETHING.
           </h2>
           <Button href={waURL} variant="primary" size="lg" isExternal>
             GET IN TOUCH →

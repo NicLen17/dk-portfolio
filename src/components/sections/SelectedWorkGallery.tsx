@@ -164,12 +164,22 @@ const aspectRatios = [
   "aspect-[3/4]",
 ];
 
+import { useLanguage } from "@/i18n/LanguageContext";
+import { resolveLocale } from "@/lib/locale";
+
 interface SelectedWorkGalleryProps {
   projects?: SanityProjectListItem[] | null;
 }
 
 export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
+  const { lang } = useLanguage();
   const hasSanityData = Boolean(projects && projects.length > 0);
+
+  const sectionLabelText = lang === "ES" ? "Trabajos Seleccionados" : "Selected Work";
+  const headingText = lang === "ES" ? ["EL ENCUADRE TRAS", "EL MOMENTO."] : ["THE FRAME AFTER", "THE MOMENT."];
+  const descText = lang === "ES" 
+    ? "Un lookbook curado que abarca fotografía deportiva de alta velocidad, encargos de arte digital dibujados a mano y relatos documentales."
+    : "A curated lookbook spanning high-speed sports photography, hand-drawn digital art commissions, and raw documentary stories.";
 
   return (
     <section
@@ -180,9 +190,9 @@ export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
         {/* Header row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-12 md:mb-16 items-end">
           <div>
-            <SectionLabel className="mb-4">Selected Work</SectionLabel>
+            <SectionLabel className="mb-4">{sectionLabelText}</SectionLabel>
             <SectionHeading className="text-[clamp(1.75rem,3.6vw,3.25rem)] text-white">
-              {["THE FRAME AFTER", "THE MOMENT."]}
+              {headingText}
             </SectionHeading>
           </div>
           <div className="flex flex-col justify-end">
@@ -193,8 +203,7 @@ export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
             >
-              A curated lookbook spanning high-speed sports photography, hand-drawn
-              digital art commissions, and raw documentary stories.
+              {descText}
             </motion.p>
           </div>
         </div>
@@ -206,6 +215,8 @@ export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
               ? projects.map((work, i) => {
                   const aspectClass = aspectRatios[i % aspectRatios.length];
                   const indexStr = String(i + 1).padStart(2, "0");
+                  const title = resolveLocale(work.title, lang);
+                  const subcategory = resolveLocale(work.subcategory, lang) || work.category;
                   return (
                     <motion.div
                       key={work._id}
@@ -221,13 +232,13 @@ export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
                     >
                       <Link
                         href={`/work/${work.slug}`}
-                        aria-label={`${work.title} — ${work.subcategory || work.category}`}
+                        aria-label={`${title} — ${subcategory}`}
                         className={`group relative block w-full ${aspectClass} overflow-hidden bg-neutral-950 transition-transform duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white`}
                       >
                         {/* Dynamic Sanity Image */}
                         <SanityImage
                           image={work.coverImage}
-                          alt={work.coverImage?.alt || work.title}
+                          alt={work.coverImage?.alt || title}
                           fill
                           className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -244,7 +255,7 @@ export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
                             {indexStr} //
                           </span>
                           <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-neutral-300">
-                            {work.subcategory || work.category}
+                            {subcategory}
                           </span>
                         </div>
 
@@ -263,7 +274,7 @@ export function SelectedWorkGallery({ projects }: SelectedWorkGalleryProps) {
                           </div>
 
                           <h3 className="font-heading font-black uppercase text-base sm:text-lg lg:text-xl text-white leading-tight tracking-tight">
-                            {work.title}
+                            {title}
                           </h3>
                         </div>
                       </Link>

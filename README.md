@@ -86,9 +86,15 @@ c:\Users\Wako\Desktop\Proyectos/
     ├── sanity.cli.ts                      # CLI config, appId & TypeGen paths
     ├── structure.ts                       # Custom organized sidebar hierarchy
     └── schemaTypes/
+        ├── siteSettings.ts                # Global contact info, WhatsApp, Instagram & socials
+        ├── heroSettings.ts                # Homepage hero banner headline, slides & CTAs
+        ├── creativeSignature.ts           # Creative signature 3-step process & images
+        ├── commissionsSettings.ts         # Custom artwork before/after showcase & 4-step workflow
+        ├── aboutSettings.ts               # Artist bio, manifesto, stats & portrait photos
         ├── project.ts                     # Portfolio projects schema (hotspot, case study)
         ├── practicePillar.ts              # The Practice homepage visual pillars schema
         ├── service.ts                     # /services structured text packages schema
+        ├── printArtwork.ts                # Art prints & merchandise schema
         ├── galleryEvent.ts                # Event galleries & photo albums schema
         └── index.ts                       # Schema registration index
 ```
@@ -141,17 +147,23 @@ The Studio navigation is split into dedicated folders for ease of use:
 📁 Content
 │
 ├── 🏠 Landing Page (Home)
-│   ├── ⚡ Hero Section (Banner & Headlines)       ← Singleton: Headline, Slides & CTAs
-│   ├── ✨ Creative Signature (Photo → Sketch → Art) ← Singleton: 3 Process Steps & Images
+│   ├── ⚡ Hero Section (Banner, Slides & CTAs)       ← Singleton: Headline, Ken Burns Slides & Buttons
+│   ├── ✨ Creative Signature (Photo → Sketch → Art)  ← Singleton: 3 Process Steps & Images
 │   ├── 🖼️ Selected Work (Featured Projects)
 │   ├── 🏛️ The Practice (3 Visual Pillars with Images)
+│   ├── ✍️ Commissions Process (Showcase & Steps)      ← Singleton: Before/After & 4-Step Workflow
+│   ├── 👤 About Darwin (Preview Bio & Manifest)       ← Singleton: Kinetic Words & Short Bio
 │   └── 📅 Event Highlights (Featured Albums)
 │
 ├── 📁 Inner Pages
 │   ├── 🖼️ /work Page (All Portfolio Projects)
 │   ├── 📋 /services Page (Packages, Text Descriptions & Checklist)
 │   ├── 🎨 /services Page — Art Prints & Merch (Own the Art)
+│   ├── 👤 /about Page (Full Bio, Stats & Portrait Photos)
 │   └── 📅 /events Page (All Client Galleries)
+│
+└── ⚙️ Global Site Settings
+    └── 🌐 Contact & Social Links                     ← Singleton: WhatsApp, Email, Instagram
 ```
 
 ### Type Generation

@@ -7,6 +7,7 @@ import { EVENT_BY_SLUG_QUERY, EVENTS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import type { SanityEventDetail, SanityEventListItem } from "@/sanity/types";
 import type { GalleryEvent } from "@/types";
+import { resolveLocale } from "@/lib/locale";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -34,19 +35,19 @@ async function resolveEvent(slug: string): Promise<GalleryEvent | null> {
           id: p._key || `photo-${idx}`,
           src: fullSrc,
           thumbnailSrc: thumbSrc,
-          alt: p.alt || `${sanityDoc.title} photo ${idx + 1}`,
+          alt: p.alt || `${resolveLocale(sanityDoc.title, "EN")} photo ${idx + 1}`,
         };
       });
 
     return {
       id: sanityDoc._id,
       slug: sanityDoc.slug,
-      title: sanityDoc.title,
+      title: resolveLocale(sanityDoc.title, "EN"),
       date: sanityDoc.date,
-      location: sanityDoc.location,
+      location: resolveLocale(sanityDoc.location, "EN"),
       photoCount: photos.length,
       coverImage: coverImageUrl,
-      description: sanityDoc.description,
+      description: resolveLocale(sanityDoc.description, "EN"),
       photos,
     };
   }
