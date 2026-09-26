@@ -25,3 +25,8 @@ Thumbs.db
 # local source dumps, not site assets
 /assets/
 /logo.PNG
+
+# studio build outputs
+studio/.sanity/
+studio/dist/
+
