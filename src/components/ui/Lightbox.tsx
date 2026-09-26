@@ -105,7 +105,7 @@ export function Lightbox({
             {/* Photo with watermark */}
             <motion.div
               key={photo.id}
-              className="relative max-w-4xl w-full max-h-[70vh] watermark"
+              className="relative max-w-4xl w-full max-h-[70vh] flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
@@ -119,6 +119,26 @@ export function Lightbox({
                 className="object-contain max-h-[70vh] w-full"
                 priority
               />
+              {/* Dual Watermark Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-6 z-10">
+                {event.watermark?.imageUrl ? (
+                  <div className="relative w-1/2 h-1/2 opacity-30">
+                    <Image
+                      src={event.watermark.imageUrl}
+                      alt="Watermark"
+                      fill
+                      className="object-contain select-none"
+                    />
+                  </div>
+                ) : (
+                  <p
+                    style={{ transform: "rotate(-20deg)" }}
+                    className="font-heading font-black uppercase text-white/20 text-3xl md:text-5xl lg:text-6xl tracking-widest select-none text-center drop-shadow-lg"
+                  >
+                    {event.watermark?.text || "DKGRFX"}
+                  </p>
+                )}
+              </div>
             </motion.div>
 
             {/* Next button */}

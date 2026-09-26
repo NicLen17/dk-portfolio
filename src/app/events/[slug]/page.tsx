@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { getEventBySlug, events } from "@/data/events";
 import { EventGalleryClient } from "@/components/events/EventGalleryClient";
 import { sanityFetch } from "@/sanity/fetch";
-import { EVENT_BY_SLUG_QUERY, EVENTS_QUERY } from "@/sanity/queries";
+import { EVENT_BY_SLUG_QUERY, EVENTS_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
-import type { SanityEventDetail, SanityEventListItem } from "@/sanity/types";
+import type { SanityEventDetail, SanityEventListItem, SanitySiteSettings } from "@/sanity/types";
 import type { GalleryEvent } from "@/types";
 import { resolveLocale } from "@/lib/locale";
 
@@ -14,12 +14,19 @@ interface PageProps {
 }
 
 async function resolveEvent(slug: string): Promise<GalleryEvent | null> {
-  const sanityDoc = await sanityFetch<SanityEventDetail>({
-    query: EVENT_BY_SLUG_QUERY,
-    params: { slug },
-    tags: ["galleryEvent"],
-    revalidate: 60,
-  });
+  const [sanityDoc, siteSettings] = await Promise.all([
+    sanityFetch<SanityEventDetail>({
+      query: EVENT_BY_SLUG_QUERY,
+      params: { slug },
+      tags: ["galleryEvent"],
+      revalidate: 60,
+    }),
+    sanityFetch<SanitySiteSettings>({
+      query: SITE_SETTINGS_QUERY,
+      tags: ["siteSettings"],
+      revalidate: 60,
+    }),
+  ]);
 
   if (sanityDoc && sanityDoc.title) {
     const coverImageUrl = sanityDoc.coverImage?.asset
@@ -39,6 +46,16 @@ async function resolveEvent(slug: string): Promise<GalleryEvent | null> {
         };
       });
 
+    let watermarkImageUrl: string | undefined = undefined;
+    if (sanityDoc.watermarkImage?.asset) {
+      watermarkImageUrl = urlFor(sanityDoc.watermarkImage).auto("format").quality(90).url();
+    } else if (siteSettings?.defaultWatermarkImage?.asset) {
+      watermarkImageUrl = urlFor(siteSettings.defaultWatermarkImage).auto("format").quality(90).url();
+    }
+
+    const watermarkText =
+      sanityDoc.watermarkText || siteSettings?.defaultWatermarkText || "DKGRFX";
+
     return {
       id: sanityDoc._id,
       slug: sanityDoc.slug,
@@ -49,6 +66,10 @@ async function resolveEvent(slug: string): Promise<GalleryEvent | null> {
       coverImage: coverImageUrl,
       description: resolveLocale(sanityDoc.description, "EN"),
       photos,
+      watermark: {
+        imageUrl: watermarkImageUrl,
+        text: watermarkText,
+      },
     };
   }
 

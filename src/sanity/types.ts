@@ -115,6 +115,8 @@ export interface SanitySiteSettings {
   instagramUrl?: string;
   footerTagline?: LocaleText;
   copyrightText?: LocaleString;
+  defaultWatermarkImage?: SanityImage;
+  defaultWatermarkText?: string;
 }
 
 export type Category = "art" | "design" | "photo";
@@ -195,6 +197,8 @@ export interface SanityEventListItem {
   description: LocaleText;
   coverImage: SanityImage;
   photoCount: number;
+  watermarkImage?: SanityImage;
+  watermarkText?: string;
 }
 
 export interface SanityEventDetail extends Omit<SanityEventListItem, "photoCount"> {

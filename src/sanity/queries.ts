@@ -139,7 +139,11 @@ export const SITE_SETTINGS_QUERY = defineQuery(/* groq */ `
     instagramHandle,
     instagramUrl,
     footerTagline,
-    copyrightText
+    copyrightText,
+    defaultWatermarkImage {
+      ${imageFragment}
+    },
+    defaultWatermarkText
   }
 `);
 
@@ -249,6 +253,10 @@ export const EVENTS_QUERY = defineQuery(/* groq */ `
     coverImage {
       ${imageFragment}
     },
+    watermarkImage {
+      ${imageFragment}
+    },
+    watermarkText,
     "photoCount": count(photos)
   }
 `);
@@ -264,6 +272,10 @@ export const EVENT_BY_SLUG_QUERY = defineQuery(/* groq */ `
     coverImage {
       ${imageFragment}
     },
+    watermarkImage {
+      ${imageFragment}
+    },
+    watermarkText,
     photos[] {
       _key,
       ${imageFragment}

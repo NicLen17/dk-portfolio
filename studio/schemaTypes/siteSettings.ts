@@ -60,6 +60,20 @@ export const siteSettings = defineType({
       title: 'Footer Copyright Text',
       type: 'localeString',
     }),
+    defineField({
+      name: 'defaultWatermarkImage',
+      title: 'Global Watermark Logo Image',
+      description: 'Upload a PNG/SVG logo with transparency to overlay across gallery photos',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'defaultWatermarkText',
+      title: 'Global Watermark Text',
+      description: 'Custom text (e.g. "DKGRFX"). Used if no watermark logo image is uploaded.',
+      type: 'string',
+      initialValue: 'DKGRFX',
+    }),
   ],
   preview: {
     select: {

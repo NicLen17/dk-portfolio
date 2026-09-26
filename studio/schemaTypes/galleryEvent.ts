@@ -79,6 +79,19 @@ export const galleryEvent = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'watermarkImage',
+      title: 'Event Watermark Logo (Override)',
+      description: 'Upload a specific PNG logo for this event gallery (overrides global watermark logo)',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'watermarkText',
+      title: 'Event Watermark Text (Override)',
+      description: 'Specific watermark text for this event (overrides global text watermark)',
+      type: 'string',
+    }),
   ],
   orderings: [
     {

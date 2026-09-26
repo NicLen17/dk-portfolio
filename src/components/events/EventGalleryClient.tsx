@@ -85,13 +85,24 @@ export function EventGalleryClient({ event }: EventGalleryClientProps) {
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
               {/* Watermark overlay */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <p
-                  style={{ transform: "rotate(-20deg)" }}
-                  className="font-heading font-black uppercase text-white/15 text-2xl md:text-3xl tracking-widest select-none"
-                >
-                  DKGRFX
-                </p>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+                {event.watermark?.imageUrl ? (
+                  <div className="relative w-3/5 h-3/5 opacity-30">
+                    <Image
+                      src={event.watermark.imageUrl}
+                      alt="Watermark"
+                      fill
+                      className="object-contain select-none"
+                    />
+                  </div>
+                ) : (
+                  <p
+                    style={{ transform: "rotate(-20deg)" }}
+                    className="font-heading font-black uppercase text-white/20 text-xl md:text-2xl tracking-widest select-none text-center"
+                  >
+                    {event.watermark?.text || "DKGRFX"}
+                  </p>
+                )}
               </div>
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-end justify-start p-3">

@@ -36,6 +36,11 @@ export interface EventPhoto {
   alt: string;
 }
 
+export interface WatermarkConfig {
+  imageUrl?: string;
+  text?: string;
+}
+
 export interface GalleryEvent {
   id: string;
   slug: string;
@@ -46,6 +51,7 @@ export interface GalleryEvent {
   coverImage: string;
   description: string;
   photos: EventPhoto[];
+  watermark?: WatermarkConfig;
 }
 
 // ── Service Types ─────────────────────────────────────────
