@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { navLinks, socialLinks } from "@/data/navigation";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface MobileMenuProps {
   onClose: () => void;
@@ -83,6 +84,18 @@ const SocialIcon = ({ icon }: { icon: string }) => {
 };
 
 export function MobileMenu({ onClose }: MobileMenuProps) {
+  const { t } = useLanguage();
+
+  const navLabels: Record<string, string> = {
+    "/": t.nav.home,
+    "/work": t.nav.work,
+    "/services": t.nav.services,
+    "/events": t.nav.events,
+    "/about": t.nav.about,
+    "/contact": t.nav.contact,
+    "/#contact": t.nav.contact,
+  };
+
   return (
     <motion.div
       className="fixed inset-0 z-40 bg-black flex flex-col"
@@ -110,7 +123,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                 onClick={onClose}
                 className="block font-heading font-bold text-5xl sm:text-6xl uppercase leading-none text-white tracking-tight hover:text-neutral-400 transition-colors duration-200"
               >
-                {link.label}
+                {navLabels[link.href] || link.label}
               </Link>
             </motion.div>
           ))}

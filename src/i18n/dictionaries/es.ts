@@ -2,6 +2,7 @@ import type { Dictionary } from "./en";
 
 export const es: Dictionary = {
   nav: {
+    home: "INICIO",
     work: "TRABAJOS",
     services: "SERVICIOS",
     events: "EVENTOS",

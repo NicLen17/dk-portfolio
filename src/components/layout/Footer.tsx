@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { buildGeneralWhatsAppURL } from "@/lib/whatsapp";
 import { socialLinks } from "@/data/navigation";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const SocialIcon = ({ icon }: { icon: string }) => {
   if (icon === "instagram") {
@@ -44,7 +46,16 @@ const SocialIcon = ({ icon }: { icon: string }) => {
 };
 
 export function Footer() {
+  const { lang, t } = useLanguage();
   const year = new Date().getFullYear();
+
+  const footerLinks = [
+    { label: t.nav.work, href: "/work" },
+    { label: t.nav.events, href: "/events" },
+    { label: t.nav.services, href: "/services" },
+    { label: t.nav.about, href: "/about" },
+    { label: t.nav.contact, href: "/#contact" },
+  ];
 
   return (
     <footer className="bg-black border-t border-white/10">
@@ -62,7 +73,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-xs font-body text-neutral-500 uppercase tracking-[0.2em]">
-              Visual Artist • Designer • Photographer
+              {lang === "ES" ? "Artista Visual • Diseñador • Fotógrafo" : "Visual Artist • Designer • Photographer"}
             </p>
             <p className="text-xs font-heading text-neutral-600 uppercase tracking-wider">
               REAL MOMENTS → ART
@@ -72,17 +83,11 @@ export function Footer() {
           {/* Navigation */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-body font-semibold uppercase tracking-[0.2em] text-neutral-500 mb-1">
-              Navigate
+              {lang === "ES" ? "Navegación" : "Navigate"}
             </p>
-            {[
-              { label: "Work", href: "/work" },
-              { label: "Events", href: "/events" },
-              { label: "Services", href: "/services" },
-              { label: "About", href: "/about" },
-              { label: "Contact", href: "/#contact" },
-            ].map((link) => (
+            {footerLinks.map((link) => (
               <Link
-                key={link.label}
+                key={link.href}
                 href={link.href}
                 className="text-sm font-body text-neutral-400 hover:text-white transition-colors duration-200"
               >
@@ -94,7 +99,7 @@ export function Footer() {
           {/* Social + Contact */}
           <div className="flex flex-col gap-4">
             <p className="text-xs font-body font-semibold uppercase tracking-[0.2em] text-neutral-500 mb-1">
-              Connect
+              {lang === "ES" ? "Contacto & Redes" : "Connect"}
             </p>
             <div className="flex flex-col gap-3">
               {socialLinks.map((link) => (
@@ -116,10 +121,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs font-body text-neutral-700">
-            © {year} DKGRFX. All rights reserved.
+            © {year} DKGRFX. {lang === "ES" ? "Todos los derechos reservados." : "All rights reserved."}
           </p>
           <p className="text-xs font-body text-neutral-700 uppercase tracking-[0.15em]">
-            ART. DESIGN. PHOTO.
+            {lang === "ES" ? "ARTE. DISEÑO. FOTO." : "ART. DESIGN. PHOTO."}
           </p>
         </div>
       </div>

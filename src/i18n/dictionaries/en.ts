@@ -1,5 +1,6 @@
 export const en = {
   nav: {
+    home: "HOME",
     work: "WORK",
     services: "SERVICES",
     events: "EVENTS",

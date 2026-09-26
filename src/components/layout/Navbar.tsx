@@ -19,11 +19,13 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
 
   const navLabels: Record<string, string> = {
+    "/": t.nav.home,
     "/work": t.nav.work,
     "/services": t.nav.services,
     "/events": t.nav.events,
     "/about": t.nav.about,
     "/contact": t.nav.contact,
+    "/#contact": t.nav.contact,
   };
 
   useEffect(() => {
