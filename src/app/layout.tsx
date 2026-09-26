@@ -113,7 +113,7 @@ const jsonLd = {
     {
       "@type": "Person",
       "@id": "https://dkgrfx.com/#person",
-      "name": "Darwin (DKGRFX)",
+      "name": "DKGRFX",
       "alternateName": ["DKGRFX", "David Baros"],
       "jobTitle": "Visual Artist, Designer & Photographer",
       "description":

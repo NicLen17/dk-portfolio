@@ -103,7 +103,7 @@ export const aboutSettings = defineType({
   preview: {
     prepare() {
       return {
-        title: 'About Darwin / DKGRFX',
+        title: 'About DKGRFX',
         subtitle: 'Artist Bio, Manifesto, Portrait & Metrics',
       }
     },

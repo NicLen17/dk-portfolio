@@ -17,7 +17,7 @@ export const siteSettings = defineType({
       name: 'artistName',
       title: 'Artist Name / Brand',
       type: 'string',
-      initialValue: 'Darwin (DKGRFX)',
+      initialValue: 'DKGRFX',
     }),
     defineField({
       name: 'location',

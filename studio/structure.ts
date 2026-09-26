@@ -67,7 +67,7 @@ export const structure: StructureResolver = (S) =>
                 ),
               // Singleton About Preview Editor
               S.listItem()
-                .title('👤 About Darwin (Landing Preview)')
+                .title('👤 About DKGRFX (Landing Preview)')
                 .icon(UserIcon)
                 .child(
                   S.document()

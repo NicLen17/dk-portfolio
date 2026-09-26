@@ -94,7 +94,7 @@ export function AboutContent({ aboutData, siteData }: AboutContentProps) {
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mt-8 max-w-sm">
                 <SanityImage
                   image={aboutData.profileImage}
-                  alt={aboutData.profileImage.alt || "Darwin — DKGRFX"}
+                  alt={aboutData.profileImage.alt || "DKGRFX"}
                   fill
                   className="object-cover"
                   priority

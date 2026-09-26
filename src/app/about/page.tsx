@@ -8,14 +8,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About the Artist & Practice",
   description:
-    "DKGRFX is an independent visual art and design practice by Darwin. Turning real moments, ideas, people, and stories into lasting visual work. REAL MOMENTS → ART.",
+    "DKGRFX is an independent visual art and design practice. Turning real moments, ideas, people, and stories into lasting visual work. REAL MOMENTS → ART.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
     title: "About the Artist & Practice | DKGRFX",
     description:
-      "DKGRFX is an independent visual art and design practice by Darwin. Turning real moments, ideas, people, and stories into lasting visual work.",
+      "DKGRFX is an independent visual art and design practice. Turning real moments, ideas, people, and stories into lasting visual work.",
     url: "https://dkgrfx.com/about",
     type: "profile",
   },
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About the Artist & Practice | DKGRFX",
     description:
-      "DKGRFX is an independent visual art and design practice by Darwin. Turning real moments, ideas, people, and stories into lasting visual work.",
+      "DKGRFX is an independent visual art and design practice. Turning real moments, ideas, people, and stories into lasting visual work.",
   },
 };
 
