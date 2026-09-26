@@ -173,9 +173,17 @@ export const project = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
+      titleEn: 'title.en',
+      titleEs: 'title.es',
       subtitle: 'category',
       media: 'coverImage',
+    },
+    prepare({ titleEn, titleEs, subtitle, media }) {
+      return {
+        title: titleEn || titleEs || 'Untitled Project',
+        subtitle: subtitle ? subtitle.toUpperCase() : '',
+        media,
+      }
     },
   },
 })

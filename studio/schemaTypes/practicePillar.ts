@@ -71,9 +71,18 @@ export const practicePillar = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'tagline',
+      titleEn: 'title.en',
+      titleEs: 'title.es',
+      subtitleEn: 'tagline.en',
+      subtitleEs: 'tagline.es',
       media: 'image',
+    },
+    prepare({ titleEn, titleEs, subtitleEn, subtitleEs, media }) {
+      return {
+        title: titleEn || titleEs || 'Untitled Pillar',
+        subtitle: subtitleEn || subtitleEs || '',
+        media,
+      }
     },
   },
 })

@@ -10,15 +10,15 @@ export const printArtwork = defineType({
     defineField({
       name: 'title',
       title: 'Artwork / Product Title',
-      type: 'string',
-      validation: (rule) => rule.required().min(2).max(80),
+      type: 'localeString',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: (doc: any) => doc?.title?.en || doc?.title || 'print',
         maxLength: 96,
       },
       validation: (rule) => rule.required(),
@@ -27,8 +27,7 @@ export const printArtwork = defineType({
       name: 'badge',
       title: 'Badge Label',
       description: 'e.g. "ART PRINT", "POSTER", "STICKER PACK", "LIMITED EDITION"',
-      type: 'string',
-      initialValue: 'ART PRINT',
+      type: 'localeString',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -59,9 +58,7 @@ export const printArtwork = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
-      rows: 3,
-      validation: (rule) => rule.required().min(10).max(400),
+      type: 'localeText',
     }),
     defineField({
       name: 'productType',
@@ -96,9 +93,18 @@ export const printArtwork = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'badge',
+      titleEn: 'title.en',
+      titleEs: 'title.es',
+      badgeEn: 'badge.en',
+      badgeEs: 'badge.es',
       media: 'image',
+    },
+    prepare({ titleEn, titleEs, badgeEn, badgeEs, media }) {
+      return {
+        title: titleEn || titleEs || 'Untitled Print',
+        subtitle: badgeEn || badgeEs || 'ART PRINT',
+        media,
+      }
     },
   },
 })

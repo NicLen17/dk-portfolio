@@ -81,8 +81,8 @@ export const heroSettings = defineType({
   ],
   preview: {
     select: {
-      title: 'headline',
-      subtitle: 'subheading',
+      title: 'headline.en',
+      subtitle: 'subheading.en',
     },
     prepare({ title, subtitle }) {
       return {

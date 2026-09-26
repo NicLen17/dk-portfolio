@@ -207,9 +207,7 @@ export function PhotoToArtShowcase({ data }: PhotoToArtShowcaseProps) {
                     alt={current.title}
                     fill
                     className={`object-cover ${
-                      activeStep === "sketch"
-                        ? "filter contrast-150 grayscale invert opacity-90"
-                        : activeStep === "photo"
+                      activeStep === "photo"
                         ? "filter grayscale-[20%]"
                         : ""
                     }`}
@@ -222,9 +220,7 @@ export function PhotoToArtShowcase({ data }: PhotoToArtShowcaseProps) {
                     alt={current.title}
                     fill
                     className={`object-cover ${
-                      activeStep === "sketch"
-                        ? "filter contrast-150 grayscale invert opacity-90"
-                        : activeStep === "photo"
+                      activeStep === "photo"
                         ? "filter grayscale-[20%]"
                         : ""
                     }`}

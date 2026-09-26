@@ -7,11 +7,14 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Lightbox } from "@/components/ui/Lightbox";
 import type { GalleryEvent, EventPhoto } from "@/types";
 
+import { useLanguage } from "@/i18n/LanguageContext";
+
 interface EventGalleryClientProps {
   event: GalleryEvent;
 }
 
 export function EventGalleryClient({ event }: EventGalleryClientProps) {
+  const { lang } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState<EventPhoto | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -43,11 +46,11 @@ export function EventGalleryClient({ event }: EventGalleryClientProps) {
           href="/events"
           className="text-xs font-body uppercase tracking-[0.2em] text-neutral-500 hover:text-white transition-colors duration-200 mb-8 inline-block"
         >
-          ← All Events
+          {lang === "ES" ? "← Todos los Eventos" : "← All Events"}
         </Link>
         <SectionLabel className="mb-3">
           {event.location} ·{" "}
-          {new Date(event.date).toLocaleDateString("en-US", {
+          {new Date(event.date).toLocaleDateString(lang === "ES" ? "es-ES" : "en-US", {
             year: "numeric",
             month: "long",
           })}
@@ -56,10 +59,12 @@ export function EventGalleryClient({ event }: EventGalleryClientProps) {
           {event.title}
         </h1>
         <p className="mt-4 text-sm text-neutral-400">
-          {event.photoCount} Photos · {event.description}
+          {event.photoCount} {lang === "ES" ? "Fotos" : "Photos"} · {event.description}
         </p>
         <p className="mt-2 text-xs text-neutral-600">
-          Click any photo to preview full-size and purchase.
+          {lang === "ES"
+            ? "Haz clic en cualquier foto para ver a pantalla completa y adquirir tu captura."
+            : "Click any photo to preview full-size and acquire your moment."}
         </p>
       </div>
 

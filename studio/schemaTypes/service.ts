@@ -11,7 +11,7 @@ export const service = defineType({
       name: 'title',
       title: 'Service Name',
       description: 'e.g. PHOTOGRAPHY, GRAPHIC DESIGN, CUSTOM ARTWORK',
-      type: 'string',
+      type: 'localeString',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -31,22 +31,21 @@ export const service = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
-      rows: 3,
+      type: 'localeText',
     }),
     defineField({
       name: 'items',
       title: 'Bullet Points / Included Offerings',
       description: 'List of features or services included in this package',
       type: 'array',
-      of: [defineArrayMember({ type: 'string' })],
+      of: [defineArrayMember({ type: 'localeString' })],
       validation: (rule) => rule.required().min(1),
     }),
     defineField({
       name: 'cta',
       title: 'Button CTA Text',
       description: 'e.g. "BOOK DKGRFX", "START A PROJECT", "START A COMMISSION"',
-      type: 'string',
+      type: 'localeString',
     }),
     defineField({
       name: 'ctaService',
@@ -64,8 +63,15 @@ export const service = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
+      titleEn: 'title.en',
+      titleEs: 'title.es',
       subtitle: 'category',
+    },
+    prepare({ titleEn, titleEs, subtitle }) {
+      return {
+        title: titleEn || titleEs || 'Untitled Service',
+        subtitle: subtitle ? subtitle.toUpperCase() : '',
+      }
     },
   },
 })

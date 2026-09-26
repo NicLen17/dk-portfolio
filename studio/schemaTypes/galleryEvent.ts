@@ -10,15 +10,15 @@ export const galleryEvent = defineType({
     defineField({
       name: 'title',
       title: 'Event Title',
-      type: 'string',
-      validation: (rule) => rule.required().min(2).max(100),
+      type: 'localeString',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: (doc: any) => doc?.title?.en || doc?.title || 'event',
         maxLength: 96,
       },
       validation: (rule) => rule.required(),
@@ -35,16 +35,13 @@ export const galleryEvent = defineType({
     defineField({
       name: 'location',
       title: 'Location',
-      type: 'string',
-      initialValue: 'Atlanta, GA',
+      type: 'localeString',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Event Description',
-      type: 'text',
-      rows: 3,
-      validation: (rule) => rule.required().min(10).max(500),
+      type: 'localeText',
     }),
     defineField({
       name: 'coverImage',
@@ -92,9 +89,17 @@ export const galleryEvent = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
+      titleEn: 'title.en',
+      titleEs: 'title.es',
       subtitle: 'date',
       media: 'coverImage',
+    },
+    prepare({ titleEn, titleEs, subtitle, media }) {
+      return {
+        title: titleEn || titleEs || 'Untitled Event',
+        subtitle: subtitle || '',
+        media,
+      }
     },
   },
 })
