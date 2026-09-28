@@ -20,7 +20,9 @@ export async function sanityFetch<T>({
         ? { cache: "no-store" }
         : {
             next: {
-              revalidate: tags.length ? false : revalidate,
+              // Keep time-based ISR even when tags exist. Tags alone never expire
+              // unless /api/revalidate runs, so publishes would stay invisible.
+              revalidate,
               tags,
             },
           }),
